@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  api:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile # Dockerfile | Dockerfile.dev
+    volumes:
+      - .:/app
+      - /app/dist
+      - /app/node_modules
+    ports:
+      - 3000:3000
+    env_file:
+      - ./.env
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes --bind 0.0.0.0
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+
+
+volumes:
+  redis-data:
