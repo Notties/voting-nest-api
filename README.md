@@ -32,6 +32,30 @@
 $ pnpm install
 ```
 
+## Create .env file
+```env
+APP_NAME=voting-nest-api
+SERVER_PORT=3000
+API_VERSION=1.0.0
+
+# development | production
+NODE_ENV=development 
+
+# Redis
+REDIS_HOST=redis # redis | 127.0.0.1
+REDIS_PORT=6379
+REDIS_URL=redis://redis:6379
+
+# SWAGGER
+SWAGGER_USER=admin
+SWAGGER_PASSWORD='123'
+```
+
+## Run with docker-compose
+```bash
+docker compose --env-file .env up --build
+```
+
 ## Compile and run the project
 
 ```bash
