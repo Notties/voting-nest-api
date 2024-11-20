@@ -23,6 +23,11 @@ export interface IRedisConfig {
   host: string;
   port: number;
   url: string;
+  pollDuration: number;
+}
+
+export interface IJwtConfig {
+  secret: string;
 }
 
 export interface ISwaggerConfig {
@@ -44,6 +49,11 @@ export class EnvironmentVariables {
   @IsEnum(Environment)
   NODE_ENV: Environment = Environment.Development;
 
+  // JWT
+  @IsString()
+  @IsNotEmpty()
+  JWT_SECRET: string;
+
   // Redis
   @IsString()
   @IsNotEmpty()
@@ -54,6 +64,9 @@ export class EnvironmentVariables {
   @IsString()
   @IsNotEmpty()
   REDIS_URL: number;
+  @IsNumber()
+  @IsNotEmpty()
+  POLL_DURATION: number;
 
   // Swagger
   @IsString()
