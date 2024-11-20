@@ -2,6 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { SWAGGER_CONFIG } from './swagger.config';
 import { HealthModule } from 'src/health/health.module';
+import { PollsModule } from 'src/polls/polls.module';
 
 export function createDocument(app: INestApplication): OpenAPIObject {
   const options = new DocumentBuilder()
@@ -12,6 +13,6 @@ export function createDocument(app: INestApplication): OpenAPIObject {
     .build();
 
   return SwaggerModule.createDocument(app, options, {
-    include: [HealthModule],
+    include: [HealthModule, PollsModule],
   });
 }
