@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app.module';
-import { RedisIoAdapter } from './adapters/redis-io.adapter';
+// import { RedisIoAdapter } from './adapters/redis-io.adapter';
 import { EnvService } from './env/env.service';
 import { SwaggerModule } from '@nestjs/swagger';
 import { createDocument } from './swagger/swagger';
@@ -48,10 +48,10 @@ async function bootstrap() {
     SwaggerModule.setup('api-docs', app, createDocument(app));
   }
 
-  const redisIoAdapter = new RedisIoAdapter(app);
-  await redisIoAdapter.connectToRedis(env.REDIS_CONFIG.url);
+  // const redisIoAdapter = new RedisIoAdapter(app);
+  // await redisIoAdapter.connectToRedis(env.REDIS_CONFIG.url);
 
-  app.useWebSocketAdapter(redisIoAdapter);
+  // app.useWebSocketAdapter(redisIoAdapter);
   await app.listen(env.APP_CONFIG.port, '0.0.0.0');
   console.info(
     'Server listening on: ',
