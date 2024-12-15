@@ -4,14 +4,15 @@ import IORedis, { Redis } from 'ioredis';
 import { EnvModule } from '../env/env.module';
 import { EnvService } from '../env/env.service';
 import { RedisService } from './redis.service';
-import { REDIS_CLIENT } from './redis.constants';
 import { ConfigModule } from '@nestjs/config';
+import { IORedisKey } from './redis.const';
+
 @Global()
 @Module({
   imports: [EnvModule, ConfigModule],
   providers: [
     {
-      provide: REDIS_CLIENT,
+      provide: IORedisKey,
       useFactory: async (env: EnvService) => {
         const logger = new Logger('RedisModule');
         const connectionOptions = {
@@ -27,9 +28,7 @@ import { ConfigModule } from '@nestjs/config';
             `Connected to redis on ${client.options.host}:${client.options.port}`,
           );
         });
-        return {
-          connectionOptions,
-        };
+        return client;
       },
       inject: [EnvService],
     },
@@ -41,7 +40,7 @@ export class RedisModule implements OnApplicationShutdown {
   constructor(private readonly moduleRef: ModuleRef) {}
 
   async onApplicationShutdown(): Promise<void> {
-    const redisClient = this.moduleRef.get<Redis>(REDIS_CLIENT);
+    const redisClient = this.moduleRef.get<Redis>(IORedisKey);
 
     return new Promise((resolve) => {
       redisClient.quit();

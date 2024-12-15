@@ -25,13 +25,13 @@ export class EnvService {
 
     this.JWT_CONFIG = {
       secret: this.config.get<string>('JWT_SECRET'),
+      accessTokenExpiration: this.config.get<string>('JWT_EXPIRATION'),
     };
 
     this.REDIS_CONFIG = {
       host: this.config.get<string>('REDIS_HOST'),
       port: this.config.get<number>('REDIS_PORT'),
       url: this.config.get<string>('REDIS_URL'),
-      pollDuration: this.config.get<number>('POLL_DURATION'),
     };
 
     this.SWAGGER_CONFIG = {

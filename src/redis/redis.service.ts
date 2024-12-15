@@ -1,16 +1,12 @@
-import { Inject, Injectable, OnModuleDestroy } from '@nestjs/common';
-import Redis from 'ioredis';
-import { REDIS_CLIENT } from './redis.constants';
+import { Inject, Injectable } from '@nestjs/common';
+import Redis, { ChainableCommander } from 'ioredis';
+import { IORedisKey } from './redis.const';
 
 @Injectable()
-export class RedisService implements OnModuleDestroy {
+export class RedisService {
   private readonly client: Redis;
-  constructor(@Inject(REDIS_CLIENT) private readonly redis: Redis) {
+  constructor(@Inject(IORedisKey) private readonly redis: Redis) {
     this.client = this.redis;
-  }
-
-  async onModuleDestroy() {
-    await this.client.quit();
   }
 
   // Basic operations
@@ -53,6 +49,10 @@ export class RedisService implements OnModuleDestroy {
 
   async lrange(key: string, start: number, stop: number): Promise<string[]> {
     return this.client.lrange(key, start, stop);
+  }
+
+  multi(commands: [string, ...unknown[]][]): ChainableCommander {
+    return this.client.multi(commands);
   }
 
   // Cache decorator
